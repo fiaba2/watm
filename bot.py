@@ -43,7 +43,6 @@ async def handle_video(update: Update, context: CallbackContext):
 async def start(update: Update, context: CallbackContext):
     await update.message.reply_text("Отправьте фото или видео, чтобы добавить водяной знак.")
 
-# Водяной знак на фото
 def add_watermark_photo(photo_path: str, output_path: str):
     # Открываем изображение и водяной знак
     image = Image.open(photo_path).convert("RGBA")
@@ -51,8 +50,8 @@ def add_watermark_photo(photo_path: str, output_path: str):
 
     img_width, img_height = image.size
 
-    # Масштабируем водяной знак до 10% ширины изображения (можно изменить на другой процент)
-    target_wm_width = int(img_width * 0.10)
+    # Масштабируем водяной знак до 30% ширины изображения
+    target_wm_width = int(img_width * 0.30)
     scale_factor = target_wm_width / watermark.width
     target_wm_height = int(watermark.height * scale_factor)
 
