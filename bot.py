@@ -45,13 +45,28 @@ async def start(update: Update, context: CallbackContext):
 
 # Водяной знак на фото
 def add_watermark_photo(photo_path: str, output_path: str):
+    # Открываем изображение и водяной знак
     image = Image.open(photo_path).convert("RGBA")
     watermark = Image.open(WATERMARK_PATH).convert("RGBA")
 
-    wm_width, wm_height = watermark.size
-    position = ((image.width - wm_width) // 2, (image.height - wm_height) // 2)
+    img_width, img_height = image.size
 
-    image.paste(watermark, position, watermark)
+    # Масштабируем водяной знак до 10% ширины изображения (можно изменить на другой процент)
+    target_wm_width = int(img_width * 0.10)
+    scale_factor = target_wm_width / watermark.width
+    target_wm_height = int(watermark.height * scale_factor)
+
+    # Изменяем размер водяного знака с сохранением пропорций
+    resized_watermark = watermark.resize((target_wm_width, target_wm_height), resample=Image.LANCZOS)
+
+    # Центрируем водяной знак
+    x = (img_width - target_wm_width) // 2
+    y = (img_height - target_wm_height) // 2
+
+    # Накладываем водяной знак
+    image.paste(resized_watermark, (x, y), mask=resized_watermark)
+
+    # Сохраняем изображение
     image.save(output_path, format="PNG")
 
 # Водяной знак на видео
