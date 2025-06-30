@@ -51,7 +51,7 @@ def add_watermark_photo(photo_path: str, output_path: str):
     img_width, img_height = image.size
 
     # Масштабируем водяной знак до 30% ширины изображения
-    target_wm_width = int(img_width * 0.20)
+    target_wm_width = int(img_width * 0.10)
     scale_factor = target_wm_width / watermark.width
     target_wm_height = int(watermark.height * scale_factor)
 
